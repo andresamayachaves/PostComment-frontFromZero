@@ -147,7 +147,7 @@ body{
     
     P{
         font-family: "Courier New";
-        color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
         font-weight:900;
         line-height: 290%;
     }.left{
@@ -169,7 +169,7 @@ body{
         font-weight: bold;
         font-size: 16;
         line-height: 140%;
-        border: none;
+        border: 1px solid rgb(255, 255, 255);
         border-radius: 2px;    
         }.button:hover{
             background-color: #4c2fcfe3;

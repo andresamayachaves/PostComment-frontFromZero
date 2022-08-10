@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 export function addNewPostToBacked(post) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch('http://localhost:8080/api/post/create/post', {
+        const response = yield fetch('http://localhost:8082/api/post/create/post', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -21,14 +21,14 @@ export function addNewPostToBacked(post) {
 }
 export function getAllPostsFromBacked() {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch('http://localhost:8080/api/post/get/all/posts');
+        const response = yield fetch('http://localhost:8082/api/post/get/all/posts');
         const posts = yield response.json();
         return posts;
     });
 }
 export function editPostToBacked(post) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch('http://localhost:8080/api/post/edit/post', {
+        const response = yield fetch('http://localhost:8082/api/post/edit/post', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ export function editPostToBacked(post) {
 }
 export function deletePostToBacked() {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch('http://localhost:8080/api/post/delete/posts', {
+        const response = yield fetch('http://localhost:8082/api/post/delete/posts', {
             method: "DELETE"
         });
         return response;
@@ -49,7 +49,7 @@ export function deletePostToBacked() {
 //--- Comments
 export function addNewCommentToBacked(comment) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch('http://localhost:8080/api/comment/create/comment', {
+        const response = yield fetch('http://localhost:8082/api/comment/create/comment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -61,14 +61,14 @@ export function addNewCommentToBacked(comment) {
 }
 export function getAllCommentsFromBacked() {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch('http://localhost:8080/api/comment/get/all/comments');
+        const response = yield fetch('http://localhost:8082/api/comment/get/all/comments');
         const comments = yield response.json();
         return comments;
     });
 }
 export function editCommentToBacked(comment) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch('http://localhost:8080/api/comment/create/comment', {
+        const response = yield fetch('http://localhost:8082/api/comment/create/comment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -80,7 +80,7 @@ export function editCommentToBacked(comment) {
 }
 export function deleteCommentToBacked() {
     return __awaiter(this, void 0, void 0, function* () {
-        //const response:Response = await fetch('http://localhost:8080/api/comment/delete/comment')
+        //const response:Response = await fetch('http://localhost:8082/api/comment/delete/comment')
         //const posts:postI[] = await response.json()
     });
 }

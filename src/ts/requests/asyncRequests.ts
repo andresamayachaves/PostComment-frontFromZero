@@ -1,6 +1,6 @@
 import {postI, commentI} from "../models/models.js"
 export async function addNewPostToBacked(post:postI){
-    const response:Response = await fetch('http://localhost:8080/api/post/create/post', {
+    const response:Response = await fetch('http://localhost:8082/api/post/create/post', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -11,14 +11,14 @@ export async function addNewPostToBacked(post:postI){
 }
 
 export async function getAllPostsFromBacked(){
-    const response:Response = await fetch('http://localhost:8080/api/post/get/all/posts')
+    const response:Response = await fetch('http://localhost:8082/api/post/get/all/posts')
     const posts:postI[] = await response.json()
 
     return posts
 }
 
 export async function editPostToBacked(post:postI){
-    const response:Response = await fetch('http://localhost:8080/api/post/edit/post', {
+    const response:Response = await fetch('http://localhost:8082/api/post/edit/post', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ export async function editPostToBacked(post:postI){
 } 
 
 export async function deletePostToBacked(){
-    const response:Response = await fetch('http://localhost:8080/api/post/delete/posts', {
+    const response:Response = await fetch('http://localhost:8082/api/post/delete/posts', {
         method: "DELETE"
     })
     return response
@@ -40,7 +40,7 @@ export async function deletePostToBacked(){
 //--- Comments
 
 export async function addNewCommentToBacked(comment:commentI){
-    const response:Response = await fetch('http://localhost:8080/api/comment/create/comment',{
+    const response:Response = await fetch('http://localhost:8082/api/comment/create/comment',{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -50,14 +50,14 @@ export async function addNewCommentToBacked(comment:commentI){
 return response
 }
 export async function getAllCommentsFromBacked(){
-    const response:Response = await fetch('http://localhost:8080/api/comment/get/all/comments')
+    const response:Response = await fetch('http://localhost:8082/api/comment/get/all/comments')
     const comments:commentI[] = await response.json()
 
     return comments
 }
 
 export async function editCommentToBacked(comment:commentI){
-    const response:Response = await fetch('http://localhost:8080/api/comment/create/comment', {
+    const response:Response = await fetch('http://localhost:8082/api/comment/create/comment', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ export async function editCommentToBacked(comment:commentI){
 }
 
 export async function deleteCommentToBacked(){
-    //const response:Response = await fetch('http://localhost:8080/api/comment/delete/comment')
+    //const response:Response = await fetch('http://localhost:8082/api/comment/delete/comment')
     //const posts:postI[] = await response.json()
 
 }

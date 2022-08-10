@@ -1,38 +1,16 @@
-import { getAllPostsFromBacked, addNewPostToBacked } from "./requests/asyncRequests.js";
+import { getAllPostsFromBacked } from "./requests/asyncRequests.js";
 console.log("Ts compiled to JS and working properly");
 const form = document.querySelector('.comments-form');
 let posts = [];
-//let comments:postI[] = [];
-form === null || form === void 0 ? void 0 : form.addEventListener('submit', (e) => handleSubmit(e));
+//let comments:commentI[] = [];
+//form?.addEventListener('submit', (e) => handleSubmit(e))
 getAllPostsFromBacked().then(response => {
     posts = response;
     console.log(posts);
-    recreatePosts(response);
+    showPosts(response);
 });
-function recreatePosts(posts) {
+function showPosts(posts) {
     posts.forEach(post => createPost(post));
-}
-function handleSubmit(e) {
-    e.preventDefault();
-    const titleInput = document.querySelector('.title-input');
-    const contentInput = document.querySelector('.content-input');
-    if (titleInput.value && contentInput.value) {
-        const newPost = {
-            id: null,
-            title: titleInput.value,
-            content: contentInput.value,
-            numberOfLikes: 0,
-            comments: []
-        };
-        addNewPostToBacked(newPost).then(response => {
-            if (response.status === 200) {
-                posts.push(newPost);
-                createComment(newPost);
-                titleInput.value = '';
-                contentInput.value = '';
-            }
-        });
-    }
 }
 function createPost(post) {
     const postsContainer = document.querySelector('.posts-container');
@@ -47,14 +25,43 @@ function createPost(post) {
     contentP.innerText = post.content;
     const deleteButton = document.createElement('button');
     deleteButton.className = 'single-post-delete-button';
-    deleteButton.innerText = 'X';
+    deleteButton.innerText = 'Delete This Post';
     // deleteButton.addEventListener('click', ()=> handleDelete(div))
     const editButton = document.createElement('button');
     editButton.className = 'single-post-edit-button';
-    editButton.innerText = 'edit';
+    editButton.innerText = 'Edit';
     //editButton.addEventListener('click', ()=> handleEdit(post))
     div.append(h2, contentP, deleteButton, editButton);
     postsContainer.append(div);
 }
-function materializePosts(posts) {
-}
+/*
+function handleSubmit(e:SubmitEvent){
+    e.preventDefault()
+    const titleInput = document.querySelector('.title-input') as HTMLInputElement;
+    const contentInput = document.querySelector('.content-input') as HTMLInputElement;
+
+    if(titleInput.value&&contentInput.value){
+    
+      const newPost:postI = {
+        id: null,
+        title: titleInput.value,
+        content: contentInput.value,
+        numberOfLikes: 0,
+        comments: []
+      }
+  
+      addNewPostToBacked(newPost).then(
+        response => {
+          if(response.status === 200){
+            posts.push(newPost)
+  
+            createPost(newPost);
+            titleInput.value = '';
+            contentInput.value = '';
+          }
+        }
+      )
+      
+    }
+  } */
+//function materializePosts(posts: Array<postI>){}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./src/styles/PCEngine.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PostEngine</title>
+  </head>
+  <body>
+    <br>
+    <h1> PCEngine </h1>
+    <h1> Posts & Comments Engine </h1>
+    <h2> _____________________________________ </h2> 
+    <h2> ACTIVE POSTS</h2><br> 
+    <body>
+      <div class="main-part">
+        <div class="cpanel">
+            <div class="icon-part">
+                <i class="num-1" aria-hidden="true">1</i><br><br><br>
+                <small id="sp-1"> -- [Title] -- </small>    
+                <p id="ph-1"> -- [Content] -- </p>
+            </div>
+            <div class="card-content-part">
+                <a href="./Specialty.html"> View </a>
+            </div>
+        </div>
+
+        <div class="cpanel cpanel-green">
+            <div class="icon-part">
+                <i class="num" aria-hidden="true">2</i><br><br><br>
+                <small id="sp-2"> -- [Title] -- </small>    
+                <p id="ph-2"> -- [Content] -- </p>
+            </div>
+            <div class="card-content-part">
+                <a href="./Specialty.html"> View </a>
+            </div>
+        </div>
+        
+        <div class="cpanel cpanel-orange">
+            <div class="icon-part">
+                <i class="num" aria-hidden="true">3</i><br><br><br>
+                <small id="sp-3"> -- [Title] -- </small>    
+                <p id="ph-3"> -- [Content] -- </p>
+            </div>
+                <div class="card-content-part">
+                <a href="./Specialty.html"> View </a>
+            </div>
+        </div>
+
+        <div class="cpanel cpanel-blue">
+          <div class="icon-part">
+            <i class="num" aria-hidden="true">4</i><br><br><br>
+            <small id="sp-4"> -- [Title] -- </small>    
+            <p id="ph-4"> -- [Content] -- </p>
+          </div>
+          <div class="card-content-part">
+            <a href="./Specialty.html"> View </a>
+          </div>
+        </div>
+          
+        <div class="cpanel cpanel-red">
+          <div class="icon-part">
+            <i class="num" aria-hidden="true">5</i><br><br><br>
+            <small id="sp-5"> -- [Title] -- </small>    
+            <p id="ph-5"> -- [Content] -- </p>
+          </div>
+          <div class="card-content-part">
+            <a href="./PostEngine/"> View </a>
+          </div>
+        </div>
+
+        <div class="cpanel cpanel-skyblue">
+          <div class="icon-part">
+            <i class="num" aria-hidden="true">6</i><br><br><br>
+            <small id="sp-6"> -- [Title] -- </small>    
+            <p id="ph-6"> -- [Content] -- </p>
+          </div>
+        <div class="card-content-part">
+            <a href="./Post.html"> View </a>
+        </div>
+      </div>
+    </div>
+        <div class="main-container">
+            <div class="form-notes-container">
+              <section class="form-container">
+                <form class="comments-form" action="#">
+                
+                </form>
+              </section>
+            <div class="notes-container">
+        
+          </div>
+        </div>
+      </div>
+    </body>
+    
+    <br><br>
+    <h2> ___________________________________________________________________ </h2> <br>
+    <button onclick="materializePosts()"> CREATE A NEW POST </button><br><br>
+    <input placeholder=" Title" class="title-input" type="text" /><br>
+    <input placeholder=" Content" class="comment-input" type="text"><br><br>
+    <button class="comments-form-button">Submit</button>
+    <button class="comments-form-button" onclick="deletePost()"> DELETE </button><br><br>
+    <i id="message2">Press 'Create a New Post', .</i><br><br>
+    <i id="message3">Also, ou can edit or delete any active post.</i><br><br><br>    
+    <script type="module" src="./src/js/PostEngineFinal.js"></script>
+  </body>
+</html>

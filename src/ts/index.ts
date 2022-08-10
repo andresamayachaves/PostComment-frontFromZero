@@ -1,35 +1,50 @@
-import { getAllPostsFromBacked, addNewPostToBacked, editPostToBacked, deletePostToBacked, addNewCommentToBacked,  getAllCommentsFromBacked, editCommentToBacked, deleteCommentToBacked } from "./requests/asyncRequests.js"
-import { commentI, postI } from "./models/models.js"
+import { getAllPostsFromBacked } from "./requests/asyncRequests.js"
+import { postI } from "./models/models.js"
+
 
 console.log("Ts compiled to JS and working properly")
 
-const form: HTMLFormElement |null = 
-document.querySelector('.comments-form');
+
+let optionalInput1  = document.querySelector("#opInput1") as HTMLElement
+let optionalInput2  = document.querySelector("#opInput2") as HTMLElement
+let optionalButton1 = document.querySelector("#opBt1")    as HTMLElement
+let optionalButton2 = document.querySelector("#opBt2")    as HTMLElement
+
+let allPosts:postI[] = [];
+
+optionalButton1.addEventListener('click', createPostHandler)
 
 
-let posts:postI[] = [];
-//let comments:commentI[] = [];
+setInitialVisibility()
 
-//form?.addEventListener('submit', (e) => handleSubmit(e))
+function setInitialVisibility(){
+  optionalInput1.style.visibility  = "hidden"
+  optionalInput2.style.visibility  = "hidden"
+  optionalButton1.style.visibility = "hidden"
+  optionalButton2.style.visibility = "hidden"
+}
+
+function createPostHandler(){
+
+  optionalInput1.style.visibility  = "visible"
+  optionalInput2.style.visibility  = "visible"
+  optionalButton1.style.visibility = "visible"
+  optionalButton2.style.visibility = "visible"
+}
 
 getAllPostsFromBacked().then(response =>{
-    posts = response;
-    console.log(posts);
-    showAllPosts(response);
+  allPosts = response;
+  console.log(allPosts);
+  showAllPosts(response);
 })
 
-
-function showAllPosts(posts:postI[]){
-  posts.forEach(post => createPost(post))
+function showAllPosts(allPosts:postI[]){
+  allPosts.forEach(post => createPost(post))
 }
 
 function createPost(post: postI) {  
   
   const postsContainer = document.querySelector('.posts-container') as HTMLDivElement
-  
-  const div:HTMLDivElement = document.createElement('div');
-  div.className = 'single-post-container'
-  div.classList.add(`post-${post.id}`)
   
   const h2:HTMLHeadElement = document.createElement('h2');
   h2.className = `single-post-title-${post.id}`
@@ -49,44 +64,18 @@ function createPost(post: postI) {
   editButton.innerText = 'Edit'
   //editButton.addEventListener('click', ()=> handleEdit(post))
   
+  const likeButton:HTMLButtonElement = document.createElement('button')
+  likeButton.className = 'single-post-like-button'
+  likeButton.innerText = 'Like!'
+  //editButton.addEventListener('click', ()=> handleEdit(post))
 
-  div.append(h2, contentP, deleteButton, editButton)
+  const div:HTMLDivElement = document.createElement('div');
+  div.className = 'cpanel'           //'single-post-container'
+  div.classList.add(`post-${post.id}`)
+
+  div.append("---------------------------------------------------------------",
+            h2,contentP, deleteButton, editButton, likeButton)
   postsContainer.append(div)
+
           
 }
-
-
-/* 
-function handleSubmit(e:SubmitEvent){
-    e.preventDefault()
-    const titleInput = document.querySelector('.title-input') as HTMLInputElement;
-    const contentInput = document.querySelector('.content-input') as HTMLInputElement;
-
-    if(titleInput.value&&contentInput.value){
-    
-      const newPost:postI = {
-        id: null,
-        title: titleInput.value,
-        content: contentInput.value,
-        numberOfLikes: 0,
-        comments: []
-      }
-  
-      addNewPostToBacked(newPost).then(
-        response => {
-          if(response.status === 200){
-            posts.push(newPost)
-  
-            createPost(newPost);  
-            titleInput.value = '';
-            contentInput.value = '';
-          }
-        }
-      )
-      
-    }
-  } */
-
-
-
-//function materializePosts(posts: Array<postI>){}

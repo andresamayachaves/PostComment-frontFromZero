@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script type="module" src="./src/js/index.js">
+      function createPostHandler(){
+
+        optionalInput1.style.visibility  = "visible"
+        optionalInput2.style.visibility  = "visible"
+        optionalButton1.style.visibility = "visible"
+        optionalButton2.style.visibility = "visible"
+      }
+    </script>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="./src/styles/index.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +23,7 @@
     <h2> ACTIVE POSTS</h2><br> 
     <body>
       <div class="main-part">
-        <div class="cpanel">
+        <div class="cpanel cpanel-grey">
             <div class="icon-part">
                 <i class="num-1" aria-hidden="true">1</i><br><br><br>
                 <small id="sp-1"> -- [Title] -- </small>    
@@ -69,7 +78,7 @@
           </div>
         </div>
 
-        <div class="cpanel cpanel-skyblue">
+        <div class="cpanel cpanel-purple">
           <div class="icon-part">
             <i class="num" aria-hidden="true">6</i><br><br><br>
             <small id="sp-6"> -- [Title] -- </small>    
@@ -94,13 +103,12 @@
     
     <br><br>
     <h2> ___________________________________________________________________ </h2> <br>
-    <button onclick="materializePosts()"> CREATE A NEW POST </button><br><br>
-    <input placeholder=" Title" class="title-input" type="text" /><br>
-    <input placeholder=" Content" class="comment-input" type="text"><br><br>
-    <button class="comments-form-button">Submit</button>
-    <button class="comments-form-button" onclick="deletePost()"> DELETE </button><br><br>
-    <i id="message2">Press 'Create a New Post', .</i><br><br>
-    <i id="message3">Also, ou can edit or delete any active post.</i><br><br><br>    
-    <script type="module" src="./src/js/index.js"></script>
+    <button onclick="createPostHandler()"> CREATE A NEW POST </button><br><br>
+    <input id="opInput1" placeholder=" Title" class="title-input" type="text" /><br>
+    <input id="opInput2" placeholder=" Content" class="comment-input" type="text"><br><br>
+    <button id="opBt1" class="comments-form-button">Submit</button>
+    <button id="opBt2" class="comments-form-button" onclick="cancelSumbit()"> Cancel </button><br><br>
+    <i id="message1">Click 'Create a New Post' to add a new one.</i><br><br>
+    <i id="message2">Also, you can edit or delete any active post with the buttons below each one.</i><br><br><br>    
   </body>
 </html>

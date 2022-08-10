@@ -1,39 +1,98 @@
 import { getAllPostsFromBacked, addNewPostToBacked, editPostToBacked, deletePostToBacked, addNewCommentToBacked,  getAllCommentsFromBacked, editCommentToBacked, deleteCommentToBacked } from "./requests/asyncRequests.js"
 import { commentI, postI } from "./models/models.js"
 
-/* const form: HTMLFormElement|null = 
+console.log("Ts compiled to JS and working properly")
+
+const form: HTMLFormElement |null = 
 document.querySelector('.comments-form');
- */
 
 
-//-------------------------------------------------
+let posts:postI[] = [];
+//let comments:postI[] = [];
+
+form?.addEventListener('submit', (e) => handleSubmit(e))
+
+getAllPostsFromBacked().then(response =>{
+    posts = response;
+    console.log(posts);
+    recreatePosts(response);
+})
 
 
-
-const comment1:commentI={
-  id: null,
-  content: "Comment Content",
-  numberOfLikes: 0,
-  //userLikes: userLikesI[]
-}
-
-const post:postI = {
-  id:null,
-  title:"this",
-  content:"Contt",
-  numberOfLikes: 0,
-  comments: [comment1]
- // userLikes: userLikesI[]
+function recreatePosts(posts:postI[]){
+  posts.forEach(post => createPost(post))
 }
 
 
-console.debug("Ts created")
 
-getAllPostsFromBacked()
-addNewPostToBacked(post) 
-editPostToBacked(post)
-deletePostToBacked()
-addNewCommentToBacked(comment1)  
-getAllCommentsFromBacked()
-editCommentToBacked(comment1) 
-deleteCommentToBacked()
+function handleSubmit(e:SubmitEvent){
+    e.preventDefault()
+    const titleInput = document.querySelector('.title-input') as HTMLInputElement;
+    const contentInput = document.querySelector('.content-input') as HTMLInputElement;
+
+    if(titleInput.value&&contentInput.value){
+    
+      const newPost:postI = {
+        id: null,
+        title: titleInput.value,
+        content: contentInput.value,
+        numberOfLikes: 0,
+        comments: []
+      }
+  
+      addNewPostToBacked(newPost).then(
+        response => {
+          if(response.status === 200){
+            posts.push(newPost)
+  
+            createComment(newPost);  
+            titleInput.value = '';
+            contentInput.value = '';
+          }
+        }
+      )
+      
+    }
+  }
+
+
+
+
+
+function createPost(post: postI) {  
+  
+  const postsContainer = document.querySelector('.posts-container') as HTMLDivElement
+  
+  const div:HTMLDivElement = document.createElement('div');
+  div.className = 'single-post-container'
+  div.classList.add(`post-${post.id}`)
+  
+  const h2:HTMLHeadElement = document.createElement('h2');
+  h2.className = `single-post-title-${post.id}`
+  h2.innerText = post.title
+  
+  const contentP:HTMLParagraphElement = document.createElement('p')
+  contentP.className = `single-post-content-${post.id}`
+  contentP.innerText = post.content
+  
+  const deleteButton:HTMLButtonElement = document.createElement('button')
+  deleteButton.className = 'single-post-delete-button'
+  deleteButton.innerText = 'X'
+ // deleteButton.addEventListener('click', ()=> handleDelete(div))
+  
+  const editButton:HTMLButtonElement = document.createElement('button')
+  editButton.className = 'single-post-edit-button'
+  editButton.innerText = 'edit'
+  //editButton.addEventListener('click', ()=> handleEdit(post))
+  
+
+  div.append(h2, contentP, deleteButton, editButton)
+  postsContainer.append(div)
+          
+  }
+
+
+
+function materializePosts(posts: Array<postI>){
+
+}

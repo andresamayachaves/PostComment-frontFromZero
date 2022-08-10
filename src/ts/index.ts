@@ -1,8 +1,4 @@
-import { getAllPostsFromBacked, addNewPostToBacked, 
-    editPostToBacked, deletePostToBacked,
-    addNewCommentToBacked,  getAllCommentsFromBacked,
-    editCommentToBacked, deleteCommentToBacked
-  } from "./requests/asyncRequests.js"
+import { getAllPostsFromBacked, addNewPostToBacked, editPostToBacked, deletePostToBacked, addNewCommentToBacked,  getAllCommentsFromBacked, editCommentToBacked, deleteCommentToBacked } from "./requests/asyncRequests.js"
 import { commentI, postI } from "./models/models.js"
 
 /* const form: HTMLFormElement|null = 

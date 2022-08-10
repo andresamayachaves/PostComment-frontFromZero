@@ -1,0 +1,231 @@
+body{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode',
+    'Lucida Grande', 'Lucida Sans', 'Arial', 'sans-serif';
+    background:#dbdbd283;
+    background-size: 100% 100%;    
+    
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    }.main-part{
+        width:80%;
+        margin:0 auto;
+        text-align: center;
+        padding: 0px 5px;
+        }
+        .cpanel{
+        width:32%;
+        display: inline-block;
+        background-color:#34495ec2;
+        color:#fff;
+        margin-top: 50px;
+        }
+        .icon-part i{
+        font-size: 30px;
+        padding:10px;
+        border:1px solid #fff;
+        border-radius:50%;
+        margin-top:-25px;
+        margin-bottom: 10px;
+        background-color:#2F4254;
+        }
+        .icon-part p{
+        margin:0px;
+        font-size: 20px;
+        padding-bottom: 10px;
+        }
+        .card-content-part{
+        background-color: #1305d3e3;
+        padding: 5px 0px;
+        }
+        .cpanel .card-content-part:hover{
+        background-color: #5a5a5a;
+        cursor: pointer;
+        }
+        .card-content-part a{
+        color:#fff;
+        text-decoration: none;
+        }
+        .cpanel-green .icon-part,.cpanel-green .icon-part i{
+        background-color: #16a08496;
+        }
+        .cpanel-green .card-content-part{
+        background-color: #1305d3e3;
+        }
+        .cpanel-orange .icon-part,.cpanel-orange .icon-part i{
+        background-color: #f39d1291;
+        }
+        .cpanel-orange .card-content-part{
+        background-color: #1305d3e3;
+        }
+        .cpanel-blue .icon-part,.cpanel-blue .icon-part i{
+        background-color: #297fb998;
+        }
+        .cpanel-blue .card-content-part{
+        background-color:#1305d3e3;
+        }
+        .cpanel-red .icon-part,.cpanel-red .icon-part i{
+        background-color:#e74d3c9c;
+        }
+        .cpanel-red .card-content-part{
+        background-color:#1305d3e3;
+        }
+        .cpanel-skyblue .icon-part,.cpanel-skyblue .icon-part i{
+        background-color:#8d44ad9d;
+        }
+        .cpanel-skyblue .card-content-part{
+        background-color:#1305d3e3;
+            }
+    
+            
+    h1{
+        font-family: "Franklin Gothic Medium";
+        color: rgb(255, 255, 255);
+        -webkit-text-stroke: 1px rgb(0, 0, 0);
+        font-weight:900;
+        font-size: 65px;
+        line-height: 85%;
+        box-align: center;
+        text-shadow: -6px 5px 5px #1305d3e3;
+        box-shadow: 5px 5px 15px 5px #000000;
+        box-sizing:border-box;
+        width: 100%;    
+        padding: 5px;
+        align-content: center;
+    }
+    h2{
+        font-family: "Franklin Gothic Medium";
+        color: rgb(0, 0, 0);
+        font-weight:900;
+        font-size: 25px;
+        line-height: 60%;
+    }
+    h3{
+        font-family: "Courier New";
+        color: rgb(0, 0, 0);
+        font-weight:900;
+        line-height: 60%;
+        font-style: italic;
+        font-size: 20px;    
+    }
+    h4{
+        font-family: "Franklin Gothic Medium";
+        color: rgb(0, 0, 0);
+        font-weight:900;
+        font-size: 45px;
+        line-height: 60%;
+    }
+    i{
+        font-family: "Verdana";
+        color: rgb(0, 0, 0);
+        font-weight:900;
+        line-height: 60%;
+        font-size: 22px;
+    
+    }.num-1{
+        font-family: "Franklin Gothic Medium";
+        color: rgb(255, 255, 255);
+        font-size: 8;
+        font-weight:900;
+        line-height: 60%;
+        font-size: 22px;
+    }.num{
+        font-family: "Franklin Gothic Medium";
+        color: rgb(66, 65, 65);
+        font-size:8;
+        font-weight:900;
+        line-height: 60%;
+        font-size: 22px;   
+    }
+    #message1{
+        font-style: italic;
+    }
+    #message1{
+        font-style: italic;
+    }
+    
+    P{
+        font-family: "Courier New";
+        color: rgb(255, 255, 255);
+        font-weight:900;
+        line-height: 290%;
+    }.left{
+        color: rgb(0, 0, 0);
+        text-align: left;
+        font-family: "Courier New";
+        font-size: 25px;
+        line-height: 100%;
+    }
+    
+    
+    button{
+        color:rgb(255, 255, 255);
+        width: 150px;
+        height: 60px;
+        background: #1305d3e3;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-weight: bold;
+        font-size: 16;
+        line-height: 140%;
+        border: none;
+        border-radius: 2px;    
+        }.button:hover{
+            background-color: #4c2fcfe3;
+            cursor: pointer;
+        }
+        .pager{
+            color:rgb(255, 255, 255);
+            width: 90px;
+            height: 25px;
+            background: #1f16a0c0;
+            font-weight: bold;
+            font-size: 16;
+            line-height: 0%;
+        } 
+        .embedded{
+            width:100%;
+            height: 38px;        
+            background-color: #1305d3e3;
+            padding: 5px 0px;
+        }.embedded:hover{
+            background-color: #5a5a5a;
+            cursor: pointer;
+        }     
+        .back{
+            background-color: #5a5a5a;
+            padding: 5px 0px;
+        }.back:hover{
+            background-color: #1ea7e6e3;
+            cursor: pointer;
+        }
+    
+    button:hover{
+            background-color: #4c2fcfe3;
+            cursor: pointer;
+    }
+    
+    input{
+    color:#1305d3e3;
+    width: 820px;
+    height: 40px;
+    background: #ffffff;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    font-size: 16;
+    line-height: 140%;
+    border: 1px solid rgb(48, 46, 46);
+    border-radius: 12px;
+    text-align: left;            
+    }
+    a{
+        font-family: "Courier New";
+        color: rgb(255, 255, 255);
+        font-weight:900;
+        line-height: 150%;
+    }
+    small{
+        font-size:23px;
+    }

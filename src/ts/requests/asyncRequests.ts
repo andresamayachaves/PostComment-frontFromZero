@@ -21,7 +21,7 @@ export async function editPostInBacked(post:postI){
     const response:Response = await fetch('http://localhost:8082/api/post/edit/post', {
         method: 'PUT',
         headers: {
-            "Access-Control-Allow-Origin": "http://192.168.1.2:8080",
+            'Access-Control-Allow-Origin': "*",
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(post)
@@ -30,10 +30,10 @@ export async function editPostInBacked(post:postI){
 } 
 
 export async function deletePostinBacked(){
-    const response:Response = await fetch('http://localhost:8082/api/post/delete/posts', {
+    const response:Response = await fetch('http://localhost:8082/api/post/delete/post', {
         method: "DELETE",
         headers:{
-            "Access-Control-Allow-Origin": "http://192.168.1.2:8080",
+            "Access-Control-Allow-Origin": "*"
         }
     })
     return response

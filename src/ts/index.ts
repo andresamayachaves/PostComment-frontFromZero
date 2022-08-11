@@ -1,7 +1,6 @@
-import { getAllPostsFromBacked,addNewPostToBacked,
-        deletePostinBacked, 
-        editPostInBacked,
-        getAllCommentsFromBacked,} from "./requests/asyncRequests.js"
+import { getAllPostsFromBacked, addNewPostToBacked,
+        deletePostinBacked, editPostInBacked,
+        getAllCommentsFromBacked} from "./requests/asyncRequests.js"
 import { postI, commentI } from "./models/models.js"
 
 
@@ -212,13 +211,81 @@ function removeCommentInHTML(comment: postI){
 }
 
 
+
+
+
+
+//----------------------------
+
 function commentsView(post:postI) {
   clearBoard(true)
-  renderComments(post)
+  //renderComments(post)
 }
 
-
+/* 
 function renderComments(post:postI) {
-  throw new Error("Function not implemented.")
+  getAllCommentsFromBacked().then(response =>{
+    allComments = response
+    console.log(allPosts)
+    allPosts.forEach(post => createComment(post))
+  })
 }
 
+function createComment(comment:commentI) {  
+  
+  const postsContainer = document.querySelector('.posts-container') as HTMLDivElement
+  
+  const contentP:HTMLParagraphElement = document.createElement('p')
+  contentP.className = `single-post-content-${comment.id}`
+  contentP.innerText = comment.content 
+
+  const deleteButton:HTMLButtonElement = document.createElement('button')
+  deleteButton.className = "single-post-delete-button"
+  deleteButton.id = `delete-${comment.id}`
+  deleteButton.innerText = 'Delete This Post'
+  
+  const editButton:HTMLButtonElement = document.createElement('button')
+  editButton.className = "single-post-edit-button"
+  editButton.id = `edit-${comment.id}`
+  editButton.innerText = 'Edit'
+  
+  const likeButton:HTMLButtonElement = document.createElement('button')
+  likeButton.className = "single-post-like-button"
+  likeButton.id = `like-${comment.id}`
+  likeButton.innerText = 'Like!'
+
+  const div:HTMLDivElement = document.createElement('div');
+  div.className = 'cpanel'
+  div.classList.add(`post-${comment.id}`)
+
+  div.append("---------------------------------------------------------------",
+  h2,contentP, deleteButton, editButton, likeButton)
+  postsContainer.append(div)
+  
+  createHTMLButtons(post)
+}
+
+function createHTMLButtons(post:postI){
+
+  let vComentsBut = document.querySelector(`#edit-${post.id}` ) as HTMLElement
+  vComentsBut.onclick = function(){
+    flowState = 3
+    clearBoard(true)
+    commentsView(post)
+    setAllVisible()    
+  }
+
+
+  let delBut = document.querySelector(`#delete-${post.id}` ) as HTMLElement
+  delBut.onclick = function(){
+    removePostInHTML(post)
+    deletePostinBacked()
+  }
+
+  let editBut = document.querySelector(`#edit-${post.id}` ) as HTMLElement
+  editBut.onclick = function(){
+    flowState=2
+    postToEdit = post
+    setAllVisible()    
+  }
+ */

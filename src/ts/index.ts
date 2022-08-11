@@ -89,8 +89,8 @@ function createHTMLButtons(post:postI){
 
   let vComentsBut = document.querySelector(`#edit-${post.id}` ) as HTMLElement
   vComentsBut.onclick = function(){
-    flowState=2
-    postToEdit = post
+    flowState = 3
+    clearBoard(true)
     setAllVisible()    
   }
 
@@ -157,9 +157,9 @@ submitButton.onclick = function(){
     postToEdit.content = newPostContent
     editPostInBacked(postToEdit)
   }
-  flowState=0  
   renderPosts()
   setInitialVisibility()  
+  flowState=0  
 }
 
 function readInput1(){

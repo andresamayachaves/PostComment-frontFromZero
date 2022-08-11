@@ -57,6 +57,12 @@ function createPost(post) {
     createHTMLButtons(post);
 }
 function createHTMLButtons(post) {
+    let vComentsBut = document.querySelector(`#edit-${post.id}`);
+    vComentsBut.onclick = function () {
+        flowState = 3;
+        clearBoard(true);
+        setAllVisible();
+    };
     let delBut = document.querySelector(`#delete-${post.id}`);
     delBut.onclick = function () {
         removePostInHTML(post);
@@ -108,9 +114,9 @@ submitButton.onclick = function () {
         postToEdit.content = newPostContent;
         editPostInBacked(postToEdit);
     }
-    flowState = 0;
     renderPosts();
     setInitialVisibility();
+    flowState = 0;
 };
 function readInput1() {
     let inputLine1 = document.querySelector('#opInput1');

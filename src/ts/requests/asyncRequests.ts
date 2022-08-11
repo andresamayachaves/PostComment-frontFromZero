@@ -28,9 +28,12 @@ export async function editPostToBacked(post:postI){
     return response
 } 
 
-export async function deletePostToBacked(){
+export async function deletePostinBacked(){
     const response:Response = await fetch('http://localhost:8082/api/post/delete/posts', {
-        method: "DELETE"
+        method: "DELETE",
+        headers:{
+            "Access-Control-Allow-Origin": "http://192.168.1.2:8080",
+        }
     })
     return response
 }

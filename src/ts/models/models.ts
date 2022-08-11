@@ -1,5 +1,5 @@
 export interface postI{
-    id:number|null,
+    id:number,
     title:string,
     content:string,
     numberOfLikes: number,

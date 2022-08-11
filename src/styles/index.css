@@ -90,7 +90,7 @@ body{
         font-weight:900;
         font-size: 65px;
         line-height: 85%;
-        box-align: center;
+        /* box-align: center; */
         text-shadow: -6px 5px 5px #1305d3e3;
         box-shadow: 5px 5px 15px 5px #000000;
         box-sizing:border-box;
@@ -172,10 +172,10 @@ body{
         padding-top: 5px;
         padding-bottom: 5px;
         font-weight: bold;
-        font-size: 16;
+        /* font-size: 16; */
         line-height: 140%;
         border: 1px solid rgb(255, 255, 255);
-        border-radius: 2px;    
+        border-radius: 11px;    
         }.button:hover{
             background-color: #4c2fcfe3;
             cursor: pointer;
@@ -186,7 +186,7 @@ body{
             height: 25px;
             background: #1f16a0c0;
             font-weight: bold;
-            font-size: 16;
+           /*  font-size: 16; */
             line-height: 0%;
         } 
         .embedded{
@@ -222,7 +222,7 @@ body{
     padding-top: 5px;
     padding-bottom: 5px;
     font-weight: bold;
-    font-size: 16;
+  /*   font-size: 16; */
     line-height: 140%;
     border: 1px solid rgb(48, 46, 46);
     border-radius: 12px;

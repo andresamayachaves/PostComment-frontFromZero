@@ -38,10 +38,13 @@ export function editPostToBacked(post) {
         return response;
     });
 }
-export function deletePostToBacked() {
+export function deletePostinBacked() {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch('http://localhost:8082/api/post/delete/posts', {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                "Access-Control-Allow-Origin": "http://192.168.1.2:8080",
+            }
         });
         return response;
     });

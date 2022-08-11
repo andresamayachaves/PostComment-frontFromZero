@@ -1,4 +1,4 @@
-import { getAllPostsFromBacked, addNewPostToBacked, deletePostinBacked, editPostInBacked, getAllCommentsFromBacked, } from "./requests/asyncRequests.js";
+import { getAllPostsFromBackend, addNewPostToBackend, deletePostInBackend, editPostInBackend, getAllCommentsFromBackend, } from "./requests/asyncRequests.js";
 console.log("Ts compiled to JS and working properly");
 let newPostButton = document.querySelector("#nPostBtn");
 let optionalInput1 = document.querySelector("#opInput1");
@@ -7,6 +7,7 @@ let submitButton = document.querySelector("#submit");
 let cancelSubmitButton = document.querySelector("#cancel");
 let flowState = 0; //FlowState=0, initialState //FlowState=1, creating post //FlowState=2,  editing
 let postToEdit;
+let commentToEdit;
 let allPosts = [];
 let allComments = [];
 setInitialVisibility();
@@ -19,7 +20,7 @@ function setInitialVisibility() {
 console.log("loaded til' here");
 renderPosts();
 function renderPosts() {
-    getAllPostsFromBacked().then(response => {
+    getAllPostsFromBackend().then(response => {
         allPosts = response;
         console.log(allPosts);
         allPosts.forEach(post => createPost(post));
@@ -61,12 +62,15 @@ function createHTMLButtons(post) {
     vComentsBut.onclick = function () {
         flowState = 3;
         clearBoard(true);
+        commentsView(post);
         setAllVisible();
     };
     let delBut = document.querySelector(`#delete-${post.id}`);
     delBut.onclick = function () {
-        removePostInHTML(post);
-        deletePostinBacked();
+        if (flowState == 0) {
+            removePostInHTML(post);
+            deletePostInBackend(post);
+        }
     };
     let editBut = document.querySelector(`#edit-${post.id}`);
     editBut.onclick = function () {
@@ -107,14 +111,13 @@ submitButton.onclick = function () {
         comments: [defaultComment]
     };
     if (flowState == 1) {
-        addNewPostToBacked(newPost);
-        allPosts = [];
+        addNewPostToBackend(newPost);
         renderPosts();
     }
     if (flowState == 2) {
         postToEdit.title = newPostTitle;
         postToEdit.content = newPostContent;
-        editPostInBacked(postToEdit);
+        editPostInBackend(postToEdit);
         renderPosts();
     }
     flowState = 0;
@@ -139,14 +142,14 @@ function likePost(post) {
 function clearBoard(posts) {
     allPosts = [];
     if (posts) {
-        getAllPostsFromBacked().then(response => {
+        getAllPostsFromBackend().then(response => {
             allPosts = response;
             console.log(allPosts);
             allPosts.forEach(post => removePostInHTML(post));
         });
     }
     else {
-        getAllCommentsFromBacked().then(response => {
+        getAllCommentsFromBackend().then(response => {
             allComments = response;
             console.log(allComments);
             allPosts.forEach(post => removeCommentInHTML(post));
@@ -156,4 +159,56 @@ function clearBoard(posts) {
 function removeCommentInHTML(comment) {
     let individualComment = document.querySelector(`.comment-${comment.id}`);
     individualComment.remove();
+}
+//----------------------------
+function commentsView(post) {
+    clearBoard(true);
+    renderComments(post);
+}
+function renderComments(post) {
+    getAllCommentsFromBackend().then(response => {
+        allComments = response;
+        console.log(allPosts);
+        allPosts.forEach(post => createComment(post));
+    });
+}
+function createComment(comment) {
+    const commentsContainer = document.querySelector('.comments-container');
+    const contentP = document.createElement('p');
+    contentP.className = `single-comment-content-${comment.id}`;
+    contentP.innerText = comment.content;
+    const deleteButton = document.createElement('button');
+    deleteButton.className = "single-comment-delete-button";
+    deleteButton.id = `delete-com-${comment.id}`;
+    deleteButton.innerText = 'Delete This Post';
+    const editButton = document.createElement('button');
+    editButton.className = "single-comment-edit-button";
+    editButton.id = `edit-com-${comment.id}`;
+    editButton.innerText = 'Edit';
+    const likeButton = document.createElement('button');
+    likeButton.className = "single-comment-like-button";
+    likeButton.id = `like-com-${comment.id}`;
+    likeButton.innerText = 'Like!';
+    const div = document.createElement('div');
+    div.className = 'cpanel';
+    div.classList.add(`comment-${comment.id}`);
+    div.append("---------------------------------------------------------------", contentP, deleteButton, editButton, likeButton);
+    commentsContainer.append(div);
+    createHTMLButtonsComment(comment);
+}
+function createHTMLButtonsComment(comment) {
+    let delBut = document.querySelector(`#delete-${comment.id}`);
+    delBut.onclick = function () {
+        removeCommentInHTML(comment);
+        deleteCommentInBackend(comment);
+    };
+    let editBut = document.querySelector(`#edit-${comment.id}`);
+    editBut.onclick = function () {
+        flowState = 2;
+        commentToEdit = comment;
+        setAllVisible();
+    };
+}
+function deleteCommentInBackend(comment) {
+    throw new Error("Function not implemented.");
 }

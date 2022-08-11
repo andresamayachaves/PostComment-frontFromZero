@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-export function addNewPostToBacked(post) {
+export function addNewPostToBackend(post) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch('http://localhost:8082/api/post/create/post', {
             method: 'POST',
@@ -19,18 +19,19 @@ export function addNewPostToBacked(post) {
         return response;
     });
 }
-export function getAllPostsFromBacked() {
+export function getAllPostsFromBackend() {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch('http://localhost:8082/api/post/get/all/posts');
         const posts = yield response.json();
         return posts;
     });
 }
-export function editPostInBacked(post) {
+export function editPostInBackend(post) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch('http://localhost:8082/api/post/edit/post', {
             method: 'PUT',
             headers: {
+                'Access-Control-Allow-Origin': "*",
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(post)
@@ -38,19 +39,21 @@ export function editPostInBacked(post) {
         return response;
     });
 }
-export function deletePostinBacked() {
+export function deletePostInBackend(post) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch('http://localhost:8082/api/post/delete/posts', {
-            method: "DELETE",
+        const response = yield fetch('http://localhost:8082/api/post/delete/post', {
+            method: 'DELETE',
             headers: {
-                "Access-Control-Allow-Origin": "http://192.168.1.2:8080",
-            }
+                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(post)
         });
         return response;
     });
 }
 //--- Comments
-export function addNewCommentToBacked(comment) {
+export function addNewCommentToBackend(comment) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch('http://localhost:8082/api/comment/create/comment', {
             method: 'POST',
@@ -62,14 +65,14 @@ export function addNewCommentToBacked(comment) {
         return response;
     });
 }
-export function getAllCommentsFromBacked() {
+export function getAllCommentsFromBackend() {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch('http://localhost:8082/api/comment/get/all/comments');
         const comments = yield response.json();
         return comments;
     });
 }
-export function editCommentInBacked(comment) {
+export function editCommentInBackend(comment) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch('http://localhost:8082/api/comment/create/comment', {
             method: 'POST',
@@ -81,7 +84,7 @@ export function editCommentInBacked(comment) {
         return response;
     });
 }
-export function deleteCommentInBacked() {
+export function deleteCommentInBackend() {
     return __awaiter(this, void 0, void 0, function* () {
         //const response:Response = await fetch('http://localhost:8082/api/comment/delete/comment')
         //const posts:postI[] = await response.json()

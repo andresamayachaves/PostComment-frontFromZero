@@ -1,5 +1,5 @@
 import {postI, commentI} from "../models/models.js"
-export async function addNewPostToBacked(post:postI){
+export async function addNewPostToBackend(post:postI){
     const response:Response = await fetch('http://localhost:8082/api/post/create/post', {
             method: 'POST',
             headers: {
@@ -10,14 +10,14 @@ export async function addNewPostToBacked(post:postI){
         return response
 }
 
-export async function getAllPostsFromBacked(){
+export async function getAllPostsFromBackend(){
     const response:Response = await fetch('http://localhost:8082/api/post/get/all/posts')
     const posts:postI[] = await response.json()
 
     return posts
 }
 
-export async function editPostInBacked(post:postI){
+export async function editPostInBackend(post:postI){
     const response:Response = await fetch('http://localhost:8082/api/post/edit/post', {
         method: 'PUT',
         headers: {
@@ -29,12 +29,14 @@ export async function editPostInBacked(post:postI){
     return response
 } 
 
-export async function deletePostinBacked(){
+export async function deletePostInBackend(post:postI){
     const response:Response = await fetch('http://localhost:8082/api/post/delete/post', {
-        method: "DELETE",
+        method: 'DELETE',
         headers:{
-            "Access-Control-Allow-Origin": "*"
-        }
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(post)
     })
     return response
 }
@@ -43,7 +45,7 @@ export async function deletePostinBacked(){
 
 //--- Comments
 
-export async function addNewCommentToBacked(comment:commentI){
+export async function addNewCommentToBackend(comment:commentI){
     const response:Response = await fetch('http://localhost:8082/api/comment/create/comment',{
         method: 'POST',
         headers: {
@@ -53,14 +55,14 @@ export async function addNewCommentToBacked(comment:commentI){
     })
 return response
 }
-export async function getAllCommentsFromBacked(){
+export async function getAllCommentsFromBackend(){
     const response:Response = await fetch('http://localhost:8082/api/comment/get/all/comments')
     const comments:commentI[] = await response.json()
 
     return comments
 }
 
-export async function editCommentInBacked(comment:commentI){
+export async function editCommentInBackend(comment:commentI){
     const response:Response = await fetch('http://localhost:8082/api/comment/create/comment', {
         method: 'POST',
         headers: {
@@ -72,7 +74,7 @@ export async function editCommentInBacked(comment:commentI){
 
 }
 
-export async function deleteCommentInBacked(){
+export async function deleteCommentInBackend(){
     //const response:Response = await fetch('http://localhost:8082/api/comment/delete/comment')
     //const posts:postI[] = await response.json()
 

@@ -91,6 +91,7 @@ function createHTMLButtons(post:postI){
   vComentsBut.onclick = function(){
     flowState = 3
     clearBoard(true)
+    commentsView(post)
     setAllVisible()    
   }
 
@@ -133,6 +134,7 @@ newPostButton.onclick = function(){
 }
 
 submitButton.onclick = function(){
+  clearBoard(true)
   let newPostTitle   = String(readInput1())  //todo solve
   let newPostContent = String(readInput2())   //todo solve
   let defaultComment = {
@@ -147,19 +149,20 @@ submitButton.onclick = function(){
     numberOfLikes: 0,
     comments: [defaultComment]
   }
-  clearBoard(true)
   if(flowState==1) {
-    addNewPostToBacked(newPost)   
+    addNewPostToBacked(newPost)
+    allPosts = []
+    renderPosts()
   }
 
   if(flowState==2) {
     postToEdit.title = newPostTitle
     postToEdit.content = newPostContent
     editPostInBacked(postToEdit)
+    renderPosts()
   }
+  flowState=0    
   setInitialVisibility()  
-  renderPosts()
-  flowState=0 
 }
 
 function readInput1(){
@@ -207,3 +210,15 @@ function removeCommentInHTML(comment: postI){
   let individualComment = document.querySelector(`.comment-${comment.id}`) as HTMLElement
   individualComment.remove()  
 }
+
+
+function commentsView(post:postI) {
+  clearBoard(true)
+  renderComments(post)
+}
+
+
+function renderComments(post:postI) {
+  throw new Error("Function not implemented.")
+}
+

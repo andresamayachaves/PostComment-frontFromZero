@@ -91,6 +91,7 @@ newPostButton.onclick = function () {
     setAllVisible();
 };
 submitButton.onclick = function () {
+    clearBoard(true);
     let newPostTitle = String(readInput1()); //todo solve
     let newPostContent = String(readInput2()); //todo solve
     let defaultComment = {
@@ -105,18 +106,19 @@ submitButton.onclick = function () {
         numberOfLikes: 0,
         comments: [defaultComment]
     };
-    clearBoard(true);
     if (flowState == 1) {
         addNewPostToBacked(newPost);
+        allPosts = [];
+        renderPosts();
     }
     if (flowState == 2) {
         postToEdit.title = newPostTitle;
         postToEdit.content = newPostContent;
         editPostInBacked(postToEdit);
+        renderPosts();
     }
-    setInitialVisibility();
-    renderPosts();
     flowState = 0;
+    setInitialVisibility();
 };
 function readInput1() {
     let inputLine1 = document.querySelector('#opInput1');

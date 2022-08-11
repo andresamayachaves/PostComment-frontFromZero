@@ -21,6 +21,7 @@ export async function editPostInBacked(post:postI){
     const response:Response = await fetch('http://localhost:8082/api/post/edit/post', {
         method: 'PUT',
         headers: {
+            "Access-Control-Allow-Origin": "http://192.168.1.2:8080",
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(post)

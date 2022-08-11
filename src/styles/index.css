@@ -207,11 +207,21 @@ body{
         }.single-post-like-button{                 
             background-color: #19b313e3;
             padding: 5px 0px;
+        }.single-view-comments-button{
+            color: #383434e8;
+            font-size: 12;
+            background-color: #1ea7e6e3;
+            width:100%;
+            height: 45px;
+            border-radius: 0px;
         }
     
     button:hover{
             background-color: #4c2fcfe3;
             cursor: pointer;
+    }.single-view-comments-button:hover{
+        background-color: #2fcf92e3;
+        cursor: pointer;
     }
     
     input{

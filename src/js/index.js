@@ -1,14 +1,14 @@
-import { getAllPostsFromBacked, addNewPostToBacked, deletePostinBacked } from "./requests/asyncRequests.js";
+import { getAllPostsFromBacked, addNewPostToBacked, deletePostinBacked, editPostInBacked, getAllCommentsFromBacked, } from "./requests/asyncRequests.js";
 console.log("Ts compiled to JS and working properly");
 let newPostButton = document.querySelector("#nPostBtn");
 let optionalInput1 = document.querySelector("#opInput1");
 let optionalInput2 = document.querySelector("#opInput2");
 let submitButton = document.querySelector("#submit");
 let cancelSubmitButton = document.querySelector("#cancel");
-let deleteButtons = {};
-let editButtons = {};
-let likeButtons = {};
+let flowState = 0; //FlowState=0, initialState //FlowState=1, creating post //FlowState=2,  editing
+let postToEdit;
 let allPosts = [];
+let allComments = [];
 setInitialVisibility();
 function setInitialVisibility() {
     optionalInput1.style.visibility = "hidden";
@@ -33,45 +33,56 @@ function createPost(post) {
     const contentP = document.createElement('p');
     contentP.className = `single-post-content-${post.id}`;
     contentP.innerText = post.content;
+    const viewCommentsButton = document.createElement('button');
+    viewCommentsButton.className = "single-view-comments-button";
+    viewCommentsButton.id = `comments-${post.id}`;
+    viewCommentsButton.innerText = 'View Comments';
     const deleteButton = document.createElement('button');
     deleteButton.className = "single-post-delete-button";
     deleteButton.id = `delete-${post.id}`;
     deleteButton.innerText = 'Delete This Post';
-    // deleteButton.addEventListener('click', ()=> handleDelete(div))
     const editButton = document.createElement('button');
     editButton.className = "single-post-edit-button";
     editButton.id = `edit-${post.id}`;
     editButton.innerText = 'Edit';
-    //editButton.addEventListener('click', ()=> handleEdit(post))
     const likeButton = document.createElement('button');
     likeButton.className = "single-post-like-button";
     likeButton.id = `like-${post.id}`;
     likeButton.innerText = 'Like!';
-    //editButton.addEventListener('click', ()=> handleEdit(post))
     const div = document.createElement('div');
-    div.className = 'cpanel'; //'single-post-container'
+    div.className = 'cpanel';
     div.classList.add(`post-${post.id}`);
-    div.append("---------------------------------------------------------------", h2, contentP, deleteButton, editButton, likeButton);
+    div.append("---------------------------------------------------------------", viewCommentsButton, h2, contentP, deleteButton, editButton, likeButton);
     postsContainer.append(div);
     createHTMLButtons(post);
 }
 function createHTMLButtons(post) {
     let delBut = document.querySelector(`#delete-${post.id}`);
     delBut.onclick = function () {
-        removePost(post);
+        removePostInHTML(post);
+        deletePostinBacked();
+    };
+    let editBut = document.querySelector(`#edit-${post.id}`);
+    editBut.onclick = function () {
+        flowState = 2;
+        postToEdit = post;
+        setAllVisible();
     };
 }
-function removePost(post) {
+function removePostInHTML(post) {
     let individualPost = document.querySelector(`.post-${post.id}`);
     individualPost.remove();
-    deletePostinBacked();
 }
-//-------------BIG BUTTONS
-newPostButton.onclick = function () {
+function setAllVisible() {
     optionalInput1.style.visibility = "visible";
     optionalInput2.style.visibility = "visible";
     submitButton.style.visibility = "visible";
     cancelSubmitButton.style.visibility = "visible";
+}
+//-------------BIG BUTTONS
+newPostButton.onclick = function () {
+    flowState = 1;
+    setAllVisible();
 };
 submitButton.onclick = function () {
     let newPostTitle = String(readInput1()); //todo solve
@@ -88,8 +99,17 @@ submitButton.onclick = function () {
         numberOfLikes: 0,
         comments: [defaultComment]
     };
-    addNewPostToBacked(newPost);
-    createPost(newPost);
+    clearBoard(true);
+    if (flowState == 1) {
+        addNewPostToBacked(newPost);
+    }
+    if (flowState == 2) {
+        postToEdit.title = newPostTitle;
+        postToEdit.content = newPostContent;
+        editPostInBacked(postToEdit);
+    }
+    flowState = 0;
+    renderPosts();
     setInitialVisibility();
 };
 function readInput1() {
@@ -102,11 +122,30 @@ function readInput2() {
 }
 cancelSubmitButton.onclick = function () {
     setInitialVisibility();
+    flowState = 0;
 };
 //-------------SINGLE POST BUTTONS
-function editPost(post) {
-    console.log("très bien jusqu'ici");
-}
 function likePost(post) {
     console.log("très bien jusqu'ici");
+}
+function clearBoard(posts) {
+    allPosts = [];
+    if (posts) {
+        getAllPostsFromBacked().then(response => {
+            allPosts = response;
+            console.log(allPosts);
+            allPosts.forEach(post => removePostInHTML(post));
+        });
+    }
+    else {
+        getAllCommentsFromBacked().then(response => {
+            allComments = response;
+            console.log(allComments);
+            allPosts.forEach(post => removeCommentInHTML(post));
+        });
+    }
+}
+function removeCommentInHTML(comment) {
+    let individualComment = document.querySelector(`.comment-${comment.id}`);
+    individualComment.remove();
 }

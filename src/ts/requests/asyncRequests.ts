@@ -17,7 +17,7 @@ export async function getAllPostsFromBacked(){
     return posts
 }
 
-export async function editPostToBacked(post:postI){
+export async function editPostInBacked(post:postI){
     const response:Response = await fetch('http://localhost:8082/api/post/edit/post', {
         method: 'PUT',
         headers: {
@@ -59,7 +59,7 @@ export async function getAllCommentsFromBacked(){
     return comments
 }
 
-export async function editCommentToBacked(comment:commentI){
+export async function editCommentInBacked(comment:commentI){
     const response:Response = await fetch('http://localhost:8082/api/comment/create/comment', {
         method: 'POST',
         headers: {
@@ -71,7 +71,7 @@ export async function editCommentToBacked(comment:commentI){
 
 }
 
-export async function deleteCommentToBacked(){
+export async function deleteCommentInBacked(){
     //const response:Response = await fetch('http://localhost:8082/api/comment/delete/comment')
     //const posts:postI[] = await response.json()
 

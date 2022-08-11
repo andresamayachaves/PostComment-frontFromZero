@@ -1,6 +1,8 @@
 import { getAllPostsFromBacked,addNewPostToBacked,
-        deletePostinBacked } from "./requests/asyncRequests.js"
-import { postI } from "./models/models.js"
+        deletePostinBacked, 
+        editPostInBacked,
+        getAllCommentsFromBacked,} from "./requests/asyncRequests.js"
+import { postI, commentI } from "./models/models.js"
 
 
 console.log("Ts compiled to JS and working properly")
@@ -11,11 +13,11 @@ let optionalInput2  = document.querySelector("#opInput2") as HTMLElement
 let submitButton    = document.querySelector("#submit")   as HTMLElement
 let cancelSubmitButton = document.querySelector("#cancel")as HTMLElement
 
-let deleteButtons:{[id:number]:HTMLElement} = {}
-let editButtons  :{[id:number]:HTMLElement} = {}
-let likeButtons  :{[id:number]:HTMLElement} = {}
+let flowState:number = 0    //FlowState=0, initialState //FlowState=1, creating post //FlowState=2,  editing
+let postToEdit:postI
 
 let allPosts:postI[] = [];
+let allComments:commentI[] = [];
 
 setInitialVisibility()
 
@@ -51,31 +53,33 @@ function createPost(post: postI) {
   const contentP:HTMLParagraphElement = document.createElement('p')
   contentP.className = `single-post-content-${post.id}`
   contentP.innerText = post.content
-  
+
+  const viewCommentsButton:HTMLButtonElement = document.createElement('button')
+  viewCommentsButton.className = "single-view-comments-button"
+  viewCommentsButton.id = `comments-${post.id}`
+  viewCommentsButton.innerText = 'View Comments'  
+
   const deleteButton:HTMLButtonElement = document.createElement('button')
   deleteButton.className = "single-post-delete-button"
   deleteButton.id = `delete-${post.id}`
   deleteButton.innerText = 'Delete This Post'
- // deleteButton.addEventListener('click', ()=> handleDelete(div))
   
   const editButton:HTMLButtonElement = document.createElement('button')
   editButton.className = "single-post-edit-button"
   editButton.id = `edit-${post.id}`
   editButton.innerText = 'Edit'
-  //editButton.addEventListener('click', ()=> handleEdit(post))
   
   const likeButton:HTMLButtonElement = document.createElement('button')
   likeButton.className = "single-post-like-button"
   likeButton.id = `like-${post.id}`
   likeButton.innerText = 'Like!'
-  //editButton.addEventListener('click', ()=> handleEdit(post))
 
   const div:HTMLDivElement = document.createElement('div');
-  div.className = 'cpanel'           //'single-post-container'
+  div.className = 'cpanel'
   div.classList.add(`post-${post.id}`)
 
   div.append("---------------------------------------------------------------",
-            h2,contentP, deleteButton, editButton, likeButton)
+  viewCommentsButton, h2,contentP, deleteButton, editButton, likeButton)
   postsContainer.append(div)
   
   createHTMLButtons(post)
@@ -83,27 +87,49 @@ function createPost(post: postI) {
 
 function createHTMLButtons(post:postI){
 
+  let vComentsBut = document.querySelector(`#edit-${post.id}` ) as HTMLElement
+  vComentsBut.onclick = function(){
+    flowState=2
+    postToEdit = post
+    setAllVisible()    
+  }
+
+
   let delBut = document.querySelector(`#delete-${post.id}` ) as HTMLElement
   delBut.onclick = function(){
-    removePost(post)
+    removePostInHTML(post)
+    deletePostinBacked()
+  }
+
+  let editBut = document.querySelector(`#edit-${post.id}` ) as HTMLElement
+  editBut.onclick = function(){
+    flowState=2
+    postToEdit = post
+    setAllVisible()    
   }
 
 
 }
 
-function removePost(post:postI){
+function removePostInHTML(post:postI){
   let individualPost   = document.querySelector(`.post-${post.id}`) as HTMLElement
-  individualPost.remove()
-  deletePostinBacked()
+  individualPost.remove()  
 }
 
-//-------------BIG BUTTONS
 
-newPostButton.onclick = function(){
+function setAllVisible() {
   optionalInput1.style.visibility     = "visible"
   optionalInput2.style.visibility     = "visible"
   submitButton.style.visibility       = "visible"
   cancelSubmitButton.style.visibility = "visible" 
+}
+
+
+//-------------BIG BUTTONS
+
+newPostButton.onclick = function(){
+  flowState=1
+  setAllVisible()
 }
 
 submitButton.onclick = function(){
@@ -114,8 +140,6 @@ submitButton.onclick = function(){
     content: "",
     numberOfLikes: 0
   }
-
-
   let newPost = {
     id: 1,
     title: newPostTitle,
@@ -123,9 +147,19 @@ submitButton.onclick = function(){
     numberOfLikes: 0,
     comments: [defaultComment]
   }
-  addNewPostToBacked(newPost)
-  createPost(newPost)
-  setInitialVisibility()
+  clearBoard(true)
+  if(flowState==1) {
+    addNewPostToBacked(newPost)
+  }
+
+  if(flowState==2) {
+    postToEdit.title = newPostTitle
+    postToEdit.content = newPostContent
+    editPostInBacked(postToEdit)
+  }
+  flowState=0  
+  renderPosts()
+  setInitialVisibility()  
 }
 
 function readInput1(){
@@ -140,15 +174,36 @@ function readInput2(){
 
 cancelSubmitButton.onclick = function(){
   setInitialVisibility()
+  flowState=0
 }
 
 
 //-------------SINGLE POST BUTTONS
 
-function editPost(post:postI){
-  console.log("très bien jusqu'ici")
-}
-
 function likePost(post:postI){
   console.log("très bien jusqu'ici")  
+}
+
+function clearBoard(posts:boolean){  //true: clearAllPosts in HTML //fañse: clearAllComments in HTML
+
+  allPosts = []
+  if(posts){
+    getAllPostsFromBacked().then(response =>{
+      allPosts = response
+      console.log(allPosts)
+      allPosts.forEach(post => removePostInHTML(post))
+    })
+  } else{
+    getAllCommentsFromBacked().then(response =>{
+      allComments = response
+      console.log(allComments)
+      allPosts.forEach(post => removeCommentInHTML(post))
+    })
+
+  }
+}
+
+function removeCommentInHTML(comment: postI){
+  let individualComment = document.querySelector(`.comment-${comment.id}`) as HTMLElement
+  individualComment.remove()  
 }

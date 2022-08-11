@@ -26,7 +26,7 @@ export function getAllPostsFromBacked() {
         return posts;
     });
 }
-export function editPostToBacked(post) {
+export function editPostInBacked(post) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch('http://localhost:8082/api/post/edit/post', {
             method: 'PUT',
@@ -69,7 +69,7 @@ export function getAllCommentsFromBacked() {
         return comments;
     });
 }
-export function editCommentToBacked(comment) {
+export function editCommentInBacked(comment) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch('http://localhost:8082/api/comment/create/comment', {
             method: 'POST',
@@ -81,7 +81,7 @@ export function editCommentToBacked(comment) {
         return response;
     });
 }
-export function deleteCommentToBacked() {
+export function deleteCommentInBacked() {
     return __awaiter(this, void 0, void 0, function* () {
         //const response:Response = await fetch('http://localhost:8082/api/comment/delete/comment')
         //const posts:postI[] = await response.json()

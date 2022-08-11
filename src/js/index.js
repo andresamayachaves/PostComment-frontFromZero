@@ -114,8 +114,8 @@ submitButton.onclick = function () {
         postToEdit.content = newPostContent;
         editPostInBacked(postToEdit);
     }
-    renderPosts();
     setInitialVisibility();
+    renderPosts();
     flowState = 0;
 };
 function readInput1() {

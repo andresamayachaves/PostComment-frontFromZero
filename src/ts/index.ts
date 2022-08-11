@@ -149,7 +149,7 @@ submitButton.onclick = function(){
   }
   clearBoard(true)
   if(flowState==1) {
-    addNewPostToBacked(newPost)
+    addNewPostToBacked(newPost)   
   }
 
   if(flowState==2) {
@@ -157,9 +157,9 @@ submitButton.onclick = function(){
     postToEdit.content = newPostContent
     editPostInBacked(postToEdit)
   }
-  renderPosts()
   setInitialVisibility()  
-  flowState=0  
+  renderPosts()
+  flowState=0 
 }
 
 function readInput1(){

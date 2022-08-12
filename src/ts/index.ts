@@ -16,10 +16,7 @@ let cancelSubmitButton = document.querySelector("#cancel")as HTMLElement
 
 let flowState:number = 0    //FlowState=0, initialState //FlowState=1, creating post //FlowState=2,  editing
 let postToEdit:postI
-
-let allPosts:postI[] = [];
-
-setInitialVisibility()
+let allPosts:postI[]
 
 function setInitialVisibility(){
   optionalInput1.style.visibility     = "hidden"
@@ -31,11 +28,12 @@ function setInitialVisibility(){
 
 console.log("loaded til' here")
 
-
+setInitialVisibility()
 renderPosts()
 
 
 function renderPosts(){
+  allPosts = []
   getAllPostsFromBackend().then(response =>{
     allPosts = response
     console.log(allPosts)
@@ -83,7 +81,7 @@ function createPost(post: postI) {
 
   const div:HTMLDivElement = document.createElement('div');
   div.className = 'cpanel'
-  div.classList.add(`post-${post.id}`)
+  div.id = `post-${post.id}`
 
   div.append("---------------------------------------------------------------",
   anchorView, h2,contentP, deleteButton, editButton, likeButton)
@@ -104,15 +102,13 @@ function createHTMLButtons(post:postI){
     setInitialVisibility()    
   }
   delBut.onclick = function(){
-    if(flowState==0){
-      removePostInHTML(post)
-      deletePostInBackend(post)
-      renderPosts()
-    }
+    
+    removePostInHTML(post)
+    deletePostInBackend(post)
+    
   }
   editBut.onclick = function(){
     flowState=2
-    editMainButton.style.visibility = "visible"
     postToEdit = post
     setAllVisible()    
     submitButton.style.visibility = "hidden"
@@ -121,8 +117,8 @@ function createHTMLButtons(post:postI){
 }
 
 function removePostInHTML(post:postI){
-  let individualPost = document.querySelector(`.post-${post.id}`) as HTMLElement
-  individualPost.remove()  
+  let individualPost = document.querySelector(`#post-${post.id}`) as HTMLElement
+  individualPost.remove()
 }
 
 
@@ -143,6 +139,8 @@ newPostButton.onclick = function(){
 }
 
 editMainButton.onclick = function(){
+
+  editMainButton.style.visibility = "visible";
 
   let newTitle   = String(readInput1())  //todo solve
   let newContent = String(readInput2())
@@ -173,7 +171,8 @@ submitButton.onclick = function(){
   addNewPostToBackend(newPost)
    
   flowState=0    
-  setInitialVisibility()  
+  //setInitialVisibility() 
+  
   renderPosts()
 }
 
@@ -200,7 +199,7 @@ function likePost(post:postI){
 }
 
 function clearBoard(){
-  allPosts = []
+  allPosts=[]
   getAllPostsFromBackend().then(response =>{
     allPosts = response
     console.log(allPosts)

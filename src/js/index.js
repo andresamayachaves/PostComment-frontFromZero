@@ -8,8 +8,7 @@ let submitButton = document.querySelector("#submit");
 let cancelSubmitButton = document.querySelector("#cancel");
 let flowState = 0; //FlowState=0, initialState //FlowState=1, creating post //FlowState=2,  editing
 let postToEdit;
-let allPosts = [];
-setInitialVisibility();
+let allPosts;
 function setInitialVisibility() {
     optionalInput1.style.visibility = "hidden";
     optionalInput2.style.visibility = "hidden";
@@ -18,8 +17,10 @@ function setInitialVisibility() {
     editMainButton.style.visibility = "hidden";
 }
 console.log("loaded til' here");
+setInitialVisibility();
 renderPosts();
 function renderPosts() {
+    allPosts = [];
     getAllPostsFromBackend().then(response => {
         allPosts = response;
         console.log(allPosts);
@@ -57,7 +58,7 @@ function createPost(post) {
     likeButton.innerText = 'Like!';
     const div = document.createElement('div');
     div.className = 'cpanel';
-    div.classList.add(`post-${post.id}`);
+    div.id = `post-${post.id}`;
     div.append("---------------------------------------------------------------", anchorView, h2, contentP, deleteButton, editButton, likeButton);
     postsContainer.append(div);
     createHTMLButtons(post);
@@ -72,22 +73,18 @@ function createHTMLButtons(post) {
         setInitialVisibility();
     };
     delBut.onclick = function () {
-        if (flowState == 0) {
-            removePostInHTML(post);
-            deletePostInBackend(post);
-            renderPosts();
-        }
+        removePostInHTML(post);
+        deletePostInBackend(post);
     };
     editBut.onclick = function () {
         flowState = 2;
-        editMainButton.style.visibility = "visible";
         postToEdit = post;
         setAllVisible();
         submitButton.style.visibility = "hidden";
     };
 }
 function removePostInHTML(post) {
-    let individualPost = document.querySelector(`.post-${post.id}`);
+    let individualPost = document.querySelector(`#post-${post.id}`);
     individualPost.remove();
 }
 function setAllVisible() {
@@ -103,6 +100,7 @@ newPostButton.onclick = function () {
     editMainButton.style.visibility = "hidden";
 };
 editMainButton.onclick = function () {
+    editMainButton.style.visibility = "visible";
     let newTitle = String(readInput1()); //todo solve
     let newContent = String(readInput2());
     postToEdit.title = newTitle;
@@ -128,7 +126,7 @@ submitButton.onclick = function () {
     };
     addNewPostToBackend(newPost);
     flowState = 0;
-    setInitialVisibility();
+    //setInitialVisibility() 
     renderPosts();
 };
 function readInput1() {

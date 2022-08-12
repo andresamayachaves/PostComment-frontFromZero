@@ -3,6 +3,7 @@ console.log("Ts compiled to JS and working properly");
 let newPostButton = document.querySelector("#nPostBtn");
 let optionalInput1 = document.querySelector("#opInput1");
 let optionalInput2 = document.querySelector("#opInput2");
+let editMainButton = document.querySelector("#edit");
 let submitButton = document.querySelector("#submit");
 let cancelSubmitButton = document.querySelector("#cancel");
 let flowState = 0; //FlowState=0, initialState //FlowState=1, creating post //FlowState=2,  editing
@@ -16,6 +17,7 @@ function setInitialVisibility() {
     optionalInput2.style.visibility = "hidden";
     submitButton.style.visibility = "hidden";
     cancelSubmitButton.style.visibility = "hidden";
+    editMainButton.style.visibility = "hidden";
 }
 console.log("loaded til' here");
 renderPosts();
@@ -58,23 +60,24 @@ function createPost(post) {
     createHTMLButtons(post);
 }
 function createHTMLButtons(post) {
-    let vComentsBut = document.querySelector(`#edit-${post.id}`);
+    let vComentsBut = document.querySelector(`#comments-${post.id}`);
+    let delBut = document.querySelector(`#delete-${post.id}`);
+    let editBut = document.querySelector(`#edit-${post.id}`);
     vComentsBut.onclick = function () {
         flowState = 3;
         clearBoard(true);
         commentsView(post);
         setAllVisible();
     };
-    let delBut = document.querySelector(`#delete-${post.id}`);
     delBut.onclick = function () {
         if (flowState == 0) {
             removePostInHTML(post);
             deletePostInBackend(post);
         }
     };
-    let editBut = document.querySelector(`#edit-${post.id}`);
     editBut.onclick = function () {
         flowState = 2;
+        editMainButton.style.visibility = "visible";
         postToEdit = post;
         setAllVisible();
     };
@@ -89,10 +92,21 @@ function setAllVisible() {
     submitButton.style.visibility = "visible";
     cancelSubmitButton.style.visibility = "visible";
 }
+editMainButton.onclick = function () {
+    let newTitle = String(readInput1()); //todo solve
+    let newContent = String(readInput2());
+    if (flowState == 2) {
+        postToEdit.title = newTitle;
+        postToEdit.content = newContent;
+        editPostInBackend(postToEdit);
+        renderPosts();
+    }
+};
 //-------------BIG BUTTONS
 newPostButton.onclick = function () {
     flowState = 1;
     setAllVisible();
+    editMainButton.style.visibility = "hidden";
 };
 submitButton.onclick = function () {
     clearBoard(true);
@@ -112,12 +126,6 @@ submitButton.onclick = function () {
     };
     if (flowState == 1) {
         addNewPostToBackend(newPost);
-        renderPosts();
-    }
-    if (flowState == 2) {
-        postToEdit.title = newPostTitle;
-        postToEdit.content = newPostContent;
-        editPostInBackend(postToEdit);
         renderPosts();
     }
     flowState = 0;
@@ -207,6 +215,8 @@ function createHTMLButtonsComment(comment) {
         flowState = 2;
         commentToEdit = comment;
         setAllVisible();
+        submitButton.style.visibility = "hidden";
+        editMainButton.style.visibility = "visible";
     };
 }
 function deleteCommentInBackend(comment) {

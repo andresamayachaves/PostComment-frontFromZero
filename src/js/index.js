@@ -1,4 +1,4 @@
-import { getAllPostsFromBackend, addNewPostToBackend, deletePostInBackend, editPostInBackend, getAllCommentsFromBackend, } from "./requests/asyncRequests.js";
+import { getAllPostsFromBackend, addNewPostToBackend, deletePostInBackend, editPostInBackend } from "./requests/asyncRequests.js";
 console.log("Ts compiled to JS and working properly");
 let newPostButton = document.querySelector("#nPostBtn");
 let optionalInput1 = document.querySelector("#opInput1");
@@ -8,9 +8,7 @@ let submitButton = document.querySelector("#submit");
 let cancelSubmitButton = document.querySelector("#cancel");
 let flowState = 0; //FlowState=0, initialState //FlowState=1, creating post //FlowState=2,  editing
 let postToEdit;
-let commentToEdit;
 let allPosts = [];
-let allComments = [];
 setInitialVisibility();
 function setInitialVisibility() {
     optionalInput1.style.visibility = "hidden";
@@ -36,10 +34,15 @@ function createPost(post) {
     const contentP = document.createElement('p');
     contentP.className = `single-post-content-${post.id}`;
     contentP.innerText = post.content;
-    const viewCommentsButton = document.createElement('button');
-    viewCommentsButton.className = "single-view-comments-button";
-    viewCommentsButton.id = `comments-${post.id}`;
-    viewCommentsButton.innerText = 'View Comments';
+    /*
+      const viewCommentsButton:HTMLButtonElement = document.createElement('button')
+      viewCommentsButton.className = "single-view-comments-button"
+      viewCommentsButton.id = `comments-${post.id}`
+      viewCommentsButton.innerText = 'View Comments' */
+    const anchorView = document.createElement('a');
+    anchorView.href = 'comments.html';
+    anchorView.innerHTML =
+        `<button class="single-view-comments-button" id='comments-${post.id}'>'View Comments'</button>`;
     const deleteButton = document.createElement('button');
     deleteButton.className = "single-post-delete-button";
     deleteButton.id = `delete-${post.id}`;
@@ -55,7 +58,7 @@ function createPost(post) {
     const div = document.createElement('div');
     div.className = 'cpanel';
     div.classList.add(`post-${post.id}`);
-    div.append("---------------------------------------------------------------", viewCommentsButton, h2, contentP, deleteButton, editButton, likeButton);
+    div.append("---------------------------------------------------------------", anchorView, h2, contentP, deleteButton, editButton, likeButton);
     postsContainer.append(div);
     createHTMLButtons(post);
 }
@@ -65,14 +68,14 @@ function createHTMLButtons(post) {
     let editBut = document.querySelector(`#edit-${post.id}`);
     vComentsBut.onclick = function () {
         flowState = 3;
-        clearBoard(true);
-        commentsView(post);
-        setAllVisible();
+        clearBoard();
+        setInitialVisibility();
     };
     delBut.onclick = function () {
         if (flowState == 0) {
             removePostInHTML(post);
             deletePostInBackend(post);
+            renderPosts();
         }
     };
     editBut.onclick = function () {
@@ -80,6 +83,7 @@ function createHTMLButtons(post) {
         editMainButton.style.visibility = "visible";
         postToEdit = post;
         setAllVisible();
+        submitButton.style.visibility = "hidden";
     };
 }
 function removePostInHTML(post) {
@@ -92,24 +96,22 @@ function setAllVisible() {
     submitButton.style.visibility = "visible";
     cancelSubmitButton.style.visibility = "visible";
 }
-editMainButton.onclick = function () {
-    let newTitle = String(readInput1()); //todo solve
-    let newContent = String(readInput2());
-    if (flowState == 2) {
-        postToEdit.title = newTitle;
-        postToEdit.content = newContent;
-        editPostInBackend(postToEdit);
-        renderPosts();
-    }
-};
 //-------------BIG BUTTONS
 newPostButton.onclick = function () {
     flowState = 1;
     setAllVisible();
     editMainButton.style.visibility = "hidden";
 };
+editMainButton.onclick = function () {
+    let newTitle = String(readInput1()); //todo solve
+    let newContent = String(readInput2());
+    postToEdit.title = newTitle;
+    postToEdit.content = newContent;
+    editPostInBackend(postToEdit);
+    renderPosts();
+};
 submitButton.onclick = function () {
-    clearBoard(true);
+    clearBoard();
     let newPostTitle = String(readInput1()); //todo solve
     let newPostContent = String(readInput2()); //todo solve
     let defaultComment = {
@@ -124,12 +126,10 @@ submitButton.onclick = function () {
         numberOfLikes: 0,
         comments: [defaultComment]
     };
-    if (flowState == 1) {
-        addNewPostToBackend(newPost);
-        renderPosts();
-    }
+    addNewPostToBackend(newPost);
     flowState = 0;
     setInitialVisibility();
+    renderPosts();
 };
 function readInput1() {
     let inputLine1 = document.querySelector('#opInput1');
@@ -147,78 +147,11 @@ cancelSubmitButton.onclick = function () {
 function likePost(post) {
     console.log("très bien jusqu'ici");
 }
-function clearBoard(posts) {
+function clearBoard() {
     allPosts = [];
-    if (posts) {
-        getAllPostsFromBackend().then(response => {
-            allPosts = response;
-            console.log(allPosts);
-            allPosts.forEach(post => removePostInHTML(post));
-        });
-    }
-    else {
-        getAllCommentsFromBackend().then(response => {
-            allComments = response;
-            console.log(allComments);
-            allPosts.forEach(post => removeCommentInHTML(post));
-        });
-    }
-}
-function removeCommentInHTML(comment) {
-    let individualComment = document.querySelector(`.comment-${comment.id}`);
-    individualComment.remove();
-}
-//----------------------------
-function commentsView(post) {
-    clearBoard(true);
-    renderComments(post);
-}
-function renderComments(post) {
-    getAllCommentsFromBackend().then(response => {
-        allComments = response;
+    getAllPostsFromBackend().then(response => {
+        allPosts = response;
         console.log(allPosts);
-        allPosts.forEach(post => createComment(post));
+        allPosts.forEach(post => removePostInHTML(post));
     });
-}
-function createComment(comment) {
-    const commentsContainer = document.querySelector('.comments-container');
-    const contentP = document.createElement('p');
-    contentP.className = `single-comment-content-${comment.id}`;
-    contentP.innerText = comment.content;
-    const deleteButton = document.createElement('button');
-    deleteButton.className = "single-comment-delete-button";
-    deleteButton.id = `delete-com-${comment.id}`;
-    deleteButton.innerText = 'Delete This Post';
-    const editButton = document.createElement('button');
-    editButton.className = "single-comment-edit-button";
-    editButton.id = `edit-com-${comment.id}`;
-    editButton.innerText = 'Edit';
-    const likeButton = document.createElement('button');
-    likeButton.className = "single-comment-like-button";
-    likeButton.id = `like-com-${comment.id}`;
-    likeButton.innerText = 'Like!';
-    const div = document.createElement('div');
-    div.className = 'cpanel';
-    div.classList.add(`comment-${comment.id}`);
-    div.append("---------------------------------------------------------------", contentP, deleteButton, editButton, likeButton);
-    commentsContainer.append(div);
-    createHTMLButtonsComment(comment);
-}
-function createHTMLButtonsComment(comment) {
-    let delBut = document.querySelector(`#delete-${comment.id}`);
-    delBut.onclick = function () {
-        removeCommentInHTML(comment);
-        deleteCommentInBackend(comment);
-    };
-    let editBut = document.querySelector(`#edit-${comment.id}`);
-    editBut.onclick = function () {
-        flowState = 2;
-        commentToEdit = comment;
-        setAllVisible();
-        submitButton.style.visibility = "hidden";
-        editMainButton.style.visibility = "visible";
-    };
-}
-function deleteCommentInBackend(comment) {
-    throw new Error("Function not implemented.");
 }

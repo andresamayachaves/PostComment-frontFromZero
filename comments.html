@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./src/styles/index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PostEngine</title>
+  </head>
+  <body>
+    <br>
+    <h1> PCEngine </h1>
+    <h1> Posts & Comments Engine </h1>
+    <h2> _____________________________________ </h2> 
+    <h2> ACTIVE COMMENTS FOR THIS POST</h2><br> 
+    <body>
+        <div class="main-container">
+            <div class="form-notes-container">
+                <section class="form-container">
+                    <form class="comments-form" action="#">
+                    </form>
+                </section>
+                <div class="posts-container">
+                </div>
+            </div>
+      </div>
+    </body>
+    
+    <br><br>
+    <h2> ___________________________________________________________________ </h2> <br>
+    <button id="nCommentBtn"> CREATE A NEW COMMENT IN POST </button>
+    <a href="./index.html"><button id="returnBtn"> RETURN TO POSTS</button></a><br><br>
+    <input id="opInput1" placeholder=" Content" class="title-input" type="text" /><br><br><br>
+    <button id="edit" class="edit-form-button">Edit</button>
+    <button id="submit" class="comments-form-button">Submit</button>
+    <button id="cancel" class="comments-form-button" onclick="cancelSumbit()"> Cancel </button><br><br>
+    <i id="message1">Click 'Create a New Commment' to add a new one to the selected post.</i><br><br>
+    <i id="message2">Also, you can edit or delete any comment in thos post.</i><br><br><br>    
+    <script type="module" src="./src/js/comments.js">      
+    </script>
+  </body>
+</html>

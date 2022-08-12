@@ -1,8 +1,8 @@
 import { getAllPostsFromBackend, addNewPostToBackend,
         deletePostInBackend, editPostInBackend,
-        getAllCommentsFromBackend, } from "./requests/asyncRequests.js"
+        getAllCommentsFromBackend, 
+        deleteCommentInBackend} from "./requests/asyncRequests.js"
 import { postI, commentI } from "./models/models.js"
-import { idText } from "../../node_modules/typescript/lib/typescript.js"
 
 
 console.log("Ts compiled to JS and working properly")
@@ -16,10 +16,8 @@ let cancelSubmitButton = document.querySelector("#cancel")as HTMLElement
 
 let flowState:number = 0    //FlowState=0, initialState //FlowState=1, creating post //FlowState=2,  editing
 let postToEdit:postI
-let commentToEdit:commentI
 
 let allPosts:postI[] = [];
-let allComments:commentI[] = [];
 
 setInitialVisibility()
 
@@ -56,11 +54,17 @@ function createPost(post: postI) {
   const contentP:HTMLParagraphElement = document.createElement('p')
   contentP.className = `single-post-content-${post.id}`
   contentP.innerText = post.content
-
+/* 
   const viewCommentsButton:HTMLButtonElement = document.createElement('button')
   viewCommentsButton.className = "single-view-comments-button"
   viewCommentsButton.id = `comments-${post.id}`
-  viewCommentsButton.innerText = 'View Comments'  
+  viewCommentsButton.innerText = 'View Comments' */  
+
+  const anchorView:HTMLAnchorElement = document.createElement('a')
+  anchorView.href = 'comments.html'  
+  anchorView.innerHTML =  
+  `<button class="single-view-comments-button" id='comments-${post.id}'>'View Comments'</button>`
+  
 
   const deleteButton:HTMLButtonElement = document.createElement('button')
   deleteButton.className = "single-post-delete-button"
@@ -82,7 +86,7 @@ function createPost(post: postI) {
   div.classList.add(`post-${post.id}`)
 
   div.append("---------------------------------------------------------------",
-  viewCommentsButton, h2,contentP, deleteButton, editButton, likeButton)
+  anchorView, h2,contentP, deleteButton, editButton, likeButton)
   postsContainer.append(div)
   
   createHTMLButtons(post)
@@ -96,14 +100,14 @@ function createHTMLButtons(post:postI){
 
   vComentsBut.onclick = function(){
     flowState = 3
-    clearBoard(true)
-    commentsView(post)
-    setAllVisible()    
+    clearBoard()
+    setInitialVisibility()    
   }
   delBut.onclick = function(){
     if(flowState==0){
       removePostInHTML(post)
       deletePostInBackend(post)
+      renderPosts()
     }
   }
   editBut.onclick = function(){
@@ -111,12 +115,13 @@ function createHTMLButtons(post:postI){
     editMainButton.style.visibility = "visible"
     postToEdit = post
     setAllVisible()    
+    submitButton.style.visibility = "hidden"
   }
 
 }
 
 function removePostInHTML(post:postI){
-  let individualPost   = document.querySelector(`.post-${post.id}`) as HTMLElement
+  let individualPost = document.querySelector(`.post-${post.id}`) as HTMLElement
   individualPost.remove()  
 }
 
@@ -128,19 +133,7 @@ function setAllVisible() {
   cancelSubmitButton.style.visibility = "visible" 
 }
 
-editMainButton.onclick = function(){
 
-  let newTitle   = String(readInput1())  //todo solve
-  let newContent = String(readInput2())
-
-  if(flowState==2) {
-    postToEdit.title =   newTitle
-    postToEdit.content = newContent
-    editPostInBackend(postToEdit)
-    renderPosts()
-  }
-
-}
 //-------------BIG BUTTONS
 
 newPostButton.onclick = function(){
@@ -149,8 +142,20 @@ newPostButton.onclick = function(){
   editMainButton.style.visibility = "hidden";
 }
 
+editMainButton.onclick = function(){
+
+  let newTitle   = String(readInput1())  //todo solve
+  let newContent = String(readInput2())
+
+  postToEdit.title =   newTitle
+  postToEdit.content = newContent
+  editPostInBackend(postToEdit)
+  renderPosts()
+
+}
+
 submitButton.onclick = function(){
-  clearBoard(true)
+  clearBoard()
   let newPostTitle   = String(readInput1())  //todo solve
   let newPostContent = String(readInput2())   //todo solve
   let defaultComment = {
@@ -165,13 +170,11 @@ submitButton.onclick = function(){
     numberOfLikes: 0,
     comments: [defaultComment]
   }
-  if(flowState==1) {
-    addNewPostToBackend(newPost)
-    renderPosts()
-  }
-
+  addNewPostToBackend(newPost)
+   
   flowState=0    
   setInitialVisibility()  
+  renderPosts()
 }
 
 function readInput1(){
@@ -196,104 +199,11 @@ function likePost(post:postI){
   console.log("très bien jusqu'ici")  
 }
 
-function clearBoard(posts:boolean){  //true: clearAllPosts in HTML //fañse: clearAllComments in HTML
-
+function clearBoard(){
   allPosts = []
-  if(posts){
-    getAllPostsFromBackend().then(response =>{
-      allPosts = response
-      console.log(allPosts)
-      allPosts.forEach(post => removePostInHTML(post))
-    })
-  } else{
-    getAllCommentsFromBackend().then(response =>{
-      allComments = response
-      console.log(allComments)
-      allPosts.forEach(post => removeCommentInHTML(post))
-    })
-
-  }
-}
-
-function removeCommentInHTML(comment: commentI){
-  let individualComment = document.querySelector(`.comment-${comment.id}`) as HTMLElement
-  individualComment.remove()  
-}
-
-
-
-
-
-
-//----------------------------
-
-function commentsView(post:postI) {
-  clearBoard(true)
-  renderComments(post)
-}
-
-
-function renderComments(post:postI) {
-  getAllCommentsFromBackend().then(response =>{
-    allComments = response
+  getAllPostsFromBackend().then(response =>{
+    allPosts = response
     console.log(allPosts)
-    allPosts.forEach(post => createComment(post))
+    allPosts.forEach(post => removePostInHTML(post))
   })
 }
-
-function createComment(comment:commentI) {  
-  
-  const commentsContainer = document.querySelector('.comments-container') as HTMLDivElement
-  
-  const contentP:HTMLParagraphElement = document.createElement('p')
-  contentP.className = `single-comment-content-${comment.id}`
-  contentP.innerText = comment.content 
-
-  const deleteButton:HTMLButtonElement = document.createElement('button')
-  deleteButton.className = "single-comment-delete-button"
-  deleteButton.id = `delete-com-${comment.id}`
-  deleteButton.innerText = 'Delete This Post'
-  
-  const editButton:HTMLButtonElement = document.createElement('button')
-  editButton.className = "single-comment-edit-button"
-  editButton.id = `edit-com-${comment.id}`
-  editButton.innerText = 'Edit'
-  
-  const likeButton:HTMLButtonElement = document.createElement('button')
-  likeButton.className = "single-comment-like-button"
-  likeButton.id = `like-com-${comment.id}`
-  likeButton.innerText = 'Like!'
-
-  const div:HTMLDivElement = document.createElement('div');
-  div.className = 'cpanel'
-  div.classList.add(`comment-${comment.id}`)
-
-  div.append("---------------------------------------------------------------",
-  contentP, deleteButton, editButton, likeButton)
-  commentsContainer.append(div)
-  
-  createHTMLButtonsComment(comment)
-}
-
-function createHTMLButtonsComment(comment:commentI){
-
-  let delBut = document.querySelector(`#delete-${comment.id}` ) as HTMLElement
-  delBut.onclick = function(){
-    removeCommentInHTML(comment)
-    deleteCommentInBackend(comment)
-  }
-
-  let editBut = document.querySelector(`#edit-${comment.id}` ) as HTMLElement
-  editBut.onclick = function(){
-    flowState=2
-    commentToEdit = comment
-    setAllVisible() 
-    submitButton.style.visibility = "hidden"
-    editMainButton.style.visibility = "visible"
-  }
-}
-
-function deleteCommentInBackend(comment:commentI) {
-  throw new Error("Function not implemented.")
-}
-

@@ -23,6 +23,15 @@ body{
     color:#fff;
     margin-bottom: 50px;
     }
+    .cpanel-comment{
+        width:32%;
+        display: inline-block;
+        border:1px solid #fff;
+        border-radius:10%;
+        background-color:#ccb010d5;
+        color:#fff;
+        margin-bottom: 50px;
+        }
     .icon-part i{
     font-size: 30px;
     padding:10px;

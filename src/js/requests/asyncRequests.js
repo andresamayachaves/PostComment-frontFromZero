@@ -84,9 +84,16 @@ export function editCommentInBackend(comment) {
         return response;
     });
 }
-export function deleteCommentInBackend() {
+export function deleteCommentInBackend(comment) {
     return __awaiter(this, void 0, void 0, function* () {
-        //const response:Response = await fetch('http://localhost:8082/api/comment/delete/comment')
-        //const posts:postI[] = await response.json()
+        const response = yield fetch('http://localhost:8082/api/comment/delete/comment', {
+            method: 'DELETE',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(comment)
+        });
+        return response;
     });
 }

@@ -74,8 +74,15 @@ export async function editCommentInBackend(comment:commentI){
 
 }
 
-export async function deleteCommentInBackend(){
-    //const response:Response = await fetch('http://localhost:8082/api/comment/delete/comment')
-    //const posts:postI[] = await response.json()
+export async function deleteCommentInBackend(comment:commentI){
+    const response:Response = await fetch('http://localhost:8082/api/comment/delete/comment', {
+        method: 'DELETE',
+        headers:{
+            "Access-Control-Allow-Origin": "*",
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(comment)
+    })
+    return response
 
 }

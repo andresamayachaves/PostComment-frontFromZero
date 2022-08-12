@@ -16,6 +16,6 @@ export interface commentI{
 
 export interface userLikesI{
     id:number,
-    userNmae:string,
+    userName:string,
     dni:string
 }
